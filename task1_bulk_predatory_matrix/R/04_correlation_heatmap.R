@@ -74,6 +74,7 @@ draw_correlation_heatmap <- function(cor_list, out_prefix) {
     ct   <- cor_list[[grp]]
     r    <- ct$r
     p    <- ct$p_adj
+    n_samp <- length(groups[[grp]])
     marks <- sig_mark(r, p)
 
     cell_fun <- function(j, i, x, y, w, h, fill) {
@@ -97,7 +98,7 @@ draw_correlation_heatmap <- function(cor_list, out_prefix) {
       row_names_gp      = gpar(fontsize = 11, fontface = "italic"),
       column_names_gp   = gpar(fontsize = 11, fontface = "italic"),
       cell_fun          = cell_fun,
-      column_title      = paste0(grp, "\n(Spearman rho, n=", length(samp), " samples)"),
+      column_title      = paste0(grp, "\n(Spearman rho, n=", n_samp, " samples)"),
       column_title_gp   = gpar(fontsize = 12, fontface = "bold"),
       width             = unit(4, "cm"),
       height            = unit(4, "cm"),

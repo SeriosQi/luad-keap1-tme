@@ -1,16 +1,17 @@
 # --- TCGA / GEO raw & processed large data ---
-**/data/raw/
-**/data/geo/
-**/data/processed/*.rds
+**/data/
 **/GDCdata/
 
-# --- Analysis outputs (regenerable; keep repo lightweight) ---
-**/results/figures/
-**/results/geo_validation/
-**/results/*.rds
+# --- Failed / partial GDC downloads (TCGAbiolinks UUID folders) ---
+**/MANIFEST.txt
+**/*-*-*-*-*/
 
-# Keep small summary tables if needed (uncomment to ignore all results):
-# **/results/
+# --- Logs ---
+**/logs/
+*.log
+
+# --- Analysis outputs (regenerable; keep repo lightweight) ---
+**/results/
 
 # --- R / Python artifacts ---
 .Rhistory

@@ -39,13 +39,11 @@ map_ensembl_to_symbol <- function(ensembl_ids) {
 
 #' Collapse duplicate gene symbols by max expression
 collapse_by_symbol <- function(expr_mat, gene_symbols) {
-  dt <- data.table(
-    symbol = gene_symbols,
-    expr   = expr_mat
-  )
-  dt <- dt[!is.na(symbol) & symbol != ""]
-  dt <- dt[, lapply(.SD, max, na.rm = TRUE), by = symbol, .SDcols = colnames(expr_mat)]
-  mat <- as.matrix(dt[, -1, with = FALSE])
+  dt <- as.data.table(expr_mat, keep.rownames = FALSE)
+  dt[, symbol := gene_symbols]
+  sample_cols <- colnames(expr_mat)
+  dt <- dt[, lapply(.SD, max, na.rm = TRUE), by = symbol, .SDcols = sample_cols]
+  mat <- as.matrix(dt[, ..sample_cols])
   rownames(mat) <- dt$symbol
   mat
 }

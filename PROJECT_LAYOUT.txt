@@ -1,0 +1,49 @@
+LUAD KEAP1 TME — Project layout
+================================
+
+luad_keap1_tme/
+├── .gitignore
+├── PROJECT_LAYOUT.txt          ← this file
+└── task1_bulk_predatory_matrix/
+    ├── config.R                ← paths, gene sets, parameters
+    ├── run_task1_pipeline.R    ← main entry (default: Scheme A Xena)
+    ├── install_dependencies.R
+    ├── R/                      ← analysis scripts (Step 1–5)
+    │   ├── 01_download_tcga_xena.R   ← Scheme A: 2-file Xena download
+    │   ├── 01_download_tcga.R        ← Scheme B: GDC (optional, --gdc)
+    │   ├── 02_keap1_mutation_status.R
+    │   ├── 03_differential_expression.R
+    │   ├── 04_correlation_heatmap.R
+    │   ├── 05_geo_validation.R
+    │   └── utils.R
+    ├── scripts/
+    │   └── correlation_heatmap.py
+    ├── data/
+    │   ├── raw/xena/           ← downloaded .tsv.gz (not in git)
+    │   ├── processed/          ← .rds caches, keap1_status.csv
+    │   └── geo/                ← GEO validation caches
+    ├── results/                ← analysis outputs (tables + figures)
+    │   ├── *.csv               ← DEA, correlation, module scores
+    │   └── figures/            ← PDF/PNG plots
+    └── logs/                   ← pipeline logs (not in git)
+
+Key result files (Task 1)
+-------------------------
+results/dea_keap1_mut_vs_wt.csv              Full limma DEA
+results/dea_predatory_matrix_genes.csv       6 predatory genes
+results/keap1_mutation_details.csv           KEAP1 mutation list
+results/predatory_module_scores.csv          Module score per sample
+results/correlation_r_KEAP1-MUT.csv          Co-expression (MUT group)
+results/mean_pairwise_correlation_summary.csv
+results/key_pair_correlation_mut_vs_wt.csv
+results/figures/volcano_predatory_matrix.pdf
+results/figures/boxplot_predatory_genes.pdf
+results/figures/module_score_keap1_groups.pdf
+results/figures/heatmap_predatory_correlation_KEAP1_MUT.pdf
+
+Run pipeline
+------------
+cd task1_bulk_predatory_matrix
+Rscript run_task1_pipeline.R              # Scheme A (Xena)
+Rscript run_task1_pipeline.R --skip-download
+Rscript run_task1_pipeline.R --gdc        # optional GDC counts path

@@ -27,7 +27,11 @@ if (!file.exists(counts_rds)) {
     data.type       = "Gene Expression Quantification",
     workflow.type   = "STAR - Counts"
   )
-  GDCdownload(query_exp, directory = PATHS$raw)
+  owd <- getwd()
+  on.exit(setwd(owd), add = TRUE)
+  setwd(PATHS$raw)
+  GDCdownload(query_exp, directory = ".")
+  setwd(owd)
   se <- GDCprepare(query_exp, directory = PATHS$raw, summarizedExperiment = TRUE)
 
   # Keep primary tumor samples only (barcode type 01)
@@ -51,7 +55,11 @@ if (!file.exists(maf_rds)) {
     data.type       = "Masked Somatic Mutation",
     workflow.type   = "Aliquot Ensemble Somatic Variant Merging and Masking"
   )
-  GDCdownload(query_maf, directory = PATHS$raw)
+  owd <- getwd()
+  on.exit(setwd(owd), add = TRUE)
+  setwd(PATHS$raw)
+  GDCdownload(query_maf, directory = ".")
+  setwd(owd)
   maf <- GDCprepare(query_maf, directory = PATHS$raw)
   saveRDS(maf, maf_rds)
   log_msg("Saved MAF: ", nrow(maf), " variants")

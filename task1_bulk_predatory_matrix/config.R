@@ -26,6 +26,22 @@ PREDATORY_GENES <- c(
 # NRF2 pathway anchor genes (optional validation panel)
 NRF2_TARGETS <- c("NFE2L2", "HMOX1", "NQO1", "GCLC", "GCLM", "TXNRD1")
 
+# Data source: "xena" (Scheme A, default) or "gdc" (TCGAbiolinks STAR counts)
+DATA_SOURCE <- "xena"
+
+# GDC Xena Hub — Scheme A (2-file fast download)
+XENA_BASE <- "https://gdc.xenahubs.net/download"
+XENA_FILES <- list(
+  expression = list(
+    url  = paste0(XENA_BASE, "/TCGA-LUAD.star_fpkm-uq.tsv.gz"),
+    dest = "TCGA-LUAD.star_fpkm-uq.tsv.gz"
+  ),
+  mutation = list(
+    url  = paste0(XENA_BASE, "/TCGA-LUAD.somaticmutation_wxs.tsv.gz"),
+    dest = "TCGA-LUAD.somaticmutation_wxs.tsv.gz"
+  )
+)
+
 # TCGA settings
 TCGA_PROJECT <- "TCGA-LUAD"
 MIN_TUMOR_SAMPLES_MUT <- 5   # minimum KEAP1-MUT samples for stable stats

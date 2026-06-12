@@ -4,12 +4,14 @@
 # =============================================================================
 # Usage:
 #   cd /home/xiruisi9394/luad_keap1_tme/task1_bulk_predatory_matrix
-#   Rscript run_task1_pipeline.R [--skip-download] [--skip-geo]
+#   Rscript run_task1_pipeline.R [--skip-download] [--skip-geo] [--gdc]
+# Default download: Scheme A (GDC Xena Hub, 2 files)
 # =============================================================================
 
 args <- commandArgs(trailingOnly = TRUE)
 SKIP_DOWNLOAD <- "--skip-download" %in% args
 SKIP_GEO      <- "--skip-geo" %in% args
+USE_GDC       <- "--gdc" %in% args
 
 PROJECT_ROOT <- "/home/xiruisi9394/luad_keap1_tme/task1_bulk_predatory_matrix"
 setwd(PROJECT_ROOT)
@@ -21,8 +23,10 @@ log_msg("========================================")
 log_msg("LUAD KEAP1 TME — Task 1 Pipeline Start")
 log_msg("========================================")
 
+download_step <- if (USE_GDC) "R/01_download_tcga.R" else "R/01_download_tcga_xena.R"
+
 steps <- c(
-  "R/01_download_tcga.R",
+  download_step,
   "R/02_keap1_mutation_status.R",
   "R/03_differential_expression.R",
   "R/04_correlation_heatmap.R",
