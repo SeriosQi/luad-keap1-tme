@@ -202,7 +202,9 @@ p_box <- ggplot(plot_df, aes(x = keap1_status, y = log2_expr, fill = keap1_statu
   theme(legend.position = "none", strip.background = element_rect(fill = "grey95"))
 
 ggsave(file.path(PATHS$figures, "boxplot_predatory_genes.pdf"),
-       p_box, width = 10, height = 7, dpi = FIG_DPI)
+       p_box, width = 12, height = 9, dpi = FIG_DPI)
+ggsave(file.path(PATHS$figures, "boxplot_predatory_genes.png"),
+       p_box, width = 12, height = 9, dpi = FIG_DPI)
 
 # --- Module score ---
 module_scores <- compute_module_score(tpm)
@@ -216,7 +218,7 @@ p_score <- ggplot(score_df, aes(x = keap1_status, y = predatory_score, fill = ke
   scale_fill_manual(values = c("KEAP1-WT" = "#3C5488", "KEAP1-MUT" = "#E64B35")) +
   labs(
     title = "Predatory Matrix Module Score",
-    subtitle = "Mean z-score of SLC7A11, GGT1, SLC1A5, ABCC1/2/3",
+    subtitle = "Mean z-score: pump + efflux + scissors + uptake (10 genes)",
     x = NULL, y = "Module Score", fill = NULL
   ) +
   theme_bw(base_size = 12) +

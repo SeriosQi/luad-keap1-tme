@@ -30,7 +30,8 @@ steps <- c(
   "R/02_keap1_mutation_status.R",
   "R/03_differential_expression.R",
   "R/04_correlation_heatmap.R",
-  "R/05_geo_validation.R"
+  "R/05_geo_validation.R",
+  "R/06_h358_predatory_matrix.R"
 )
 
 if (SKIP_DOWNLOAD) {

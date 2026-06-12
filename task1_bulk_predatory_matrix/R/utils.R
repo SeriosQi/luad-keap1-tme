@@ -106,3 +106,10 @@ log_msg <- function(...) {
   message(msg)
   invisible(msg)
 }
+
+#' Row annotation vector for predatory matrix heatmaps
+predatory_module_annotation <- function(genes) {
+  mod <- PREDATORY_GENE_MODULE[genes]
+  mod[is.na(mod)] <- "Other"
+  factor(mod, levels = names(MODULE_COLORS))
+}

@@ -28,7 +28,12 @@ import seaborn as sns
 from scipy import stats
 
 
-PREDATORY_GENES = ["SLC7A11", "GGT1", "SLC1A5", "ABCC1", "ABCC2", "ABCC3"]
+PREDATORY_GENES = [
+    "SLC7A11",
+    "ABCC1", "ABCC2", "ABCC3",
+    "GGT1", "GGT5", "DPEP1",
+    "SLC1A4", "SLC1A5",
+]
 
 
 def spearman_correlation_matrix(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:

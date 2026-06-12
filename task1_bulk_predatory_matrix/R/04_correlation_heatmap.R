@@ -100,8 +100,8 @@ draw_correlation_heatmap <- function(cor_list, out_prefix) {
       cell_fun          = cell_fun,
       column_title      = paste0(grp, "\n(Spearman rho, n=", n_samp, " samples)"),
       column_title_gp   = gpar(fontsize = 12, fontface = "bold"),
-      width             = unit(4, "cm"),
-      height            = unit(4, "cm"),
+      width             = unit(5.5, "cm"),
+      height            = unit(5.5, "cm"),
       heatmap_legend_param = list(
         title = "Correlation",
         at    = c(-1, -0.5, 0, 0.5, 1),
@@ -111,12 +111,12 @@ draw_correlation_heatmap <- function(cor_list, out_prefix) {
     ht_list <- ht_list + ht
   }
 
-  pdf(paste0(out_prefix, ".pdf"), width = 14, height = 5)
+  pdf(paste0(out_prefix, ".pdf"), width = 18, height = 6)
   draw(ht_list, merge_legend = TRUE,
        heatmap_legend_side = "right", annotation_legend_side = "right")
   dev.off()
 
-  png(paste0(out_prefix, ".png"), width = 14, height = 5, units = "in", res = FIG_DPI)
+  png(paste0(out_prefix, ".png"), width = 18, height = 6, units = "in", res = FIG_DPI)
   draw(ht_list, merge_legend = TRUE,
        heatmap_legend_side = "right", annotation_legend_side = "right")
   dev.off()
@@ -140,6 +140,13 @@ if (length(mut_samples) >= 3) {
   )
 
   col_fun <- colorRamp2(c(-1, 0, 1), c("#2166AC", "#F7F7F7", "#B2182B"))
+  row_mod <- predatory_module_annotation(rownames(r_mut))
+  row_ha  <- rowAnnotation(
+    Module = row_mod,
+    col = list(Module = MODULE_COLORS),
+    show_annotation_name = TRUE,
+    annotation_name_gp = gpar(fontsize = 10)
+  )
 
   ht_mut <- Heatmap(
     r_mut,
@@ -147,16 +154,17 @@ if (length(mut_samples) >= 3) {
     col  = col_fun,
     cluster_rows = TRUE,
     cluster_columns = TRUE,
+    left_annotation = row_ha,
     cell_fun = function(j, i, x, y, w, h, fill) {
-      grid.text(sprintf("%.2f", r_mut[i, j]), x, y, gp = gpar(fontsize = 11))
+      grid.text(sprintf("%.2f", r_mut[i, j]), x, y, gp = gpar(fontsize = 10))
       if (i != j && p_mut[i, j] < 0.05) {
-        grid.text("*", x, y - unit(2.5, "mm"), gp = gpar(fontsize = 10))
+        grid.text("*", x, y - unit(2.5, "mm"), gp = gpar(fontsize = 9))
       }
     },
-    row_names_gp    = gpar(fontsize = 12, fontface = "italic"),
-    column_names_gp = gpar(fontsize = 12, fontface = "italic"),
+    row_names_gp    = gpar(fontsize = 11, fontface = "italic"),
+    column_names_gp = gpar(fontsize = 11, fontface = "italic"),
     column_title = paste0(
-      "Predatory Matrix Co-expression\nKEAP1-MUT LUAD (n=", length(mut_samples), ")"
+      "Predatory Matrix Co-expression (10 genes)\nKEAP1-MUT LUAD (n=", length(mut_samples), ")"
     ),
     column_title_gp = gpar(fontsize = 13, fontface = "bold"),
     heatmap_legend_param = list(
@@ -166,13 +174,13 @@ if (length(mut_samples) >= 3) {
   )
 
   pdf(file.path(PATHS$figures, "heatmap_predatory_correlation_KEAP1_MUT.pdf"),
-      width = 7, height = 6)
-  draw(ht_mut)
+      width = 9, height = 8)
+  draw(ht_mut, merge_legend = TRUE)
   dev.off()
 
   png(file.path(PATHS$figures, "heatmap_predatory_correlation_KEAP1_MUT.png"),
-      width = 7, height = 6, units = "in", res = FIG_DPI)
-  draw(ht_mut)
+      width = 9, height = 8, units = "in", res = FIG_DPI)
+  draw(ht_mut, merge_legend = TRUE)
   dev.off()
 }
 
@@ -189,12 +197,7 @@ print(mean_rho_df)
 
 # --- Fisher z-test: correlation difference MUT vs WT (SLC7A11-GGT1 key pair) ---
 if (length(mut_samples) >= 5 && length(wt_samples) >= 5) {
-  key_pairs <- list(
-    c("SLC7A11", "GGT1"),
-    c("GGT1", "SLC1A5"),
-    c("SLC7A11", "SLC1A5")
-  )
-  pair_tests <- lapply(key_pairs, function(pair) {
+  pair_tests <- lapply(KEY_GENE_PAIRS, function(pair) {
     g1 <- pair[1]; g2 <- pair[2]
     x_mut <- log_expr[g1, mut_samples]; y_mut <- log_expr[g2, mut_samples]
     x_wt  <- log_expr[g1, wt_samples];  y_wt  <- log_expr[g2, wt_samples]
