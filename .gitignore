@@ -1,0 +1,38 @@
+# --- TCGA / GEO raw & processed large data ---
+**/data/raw/
+**/data/geo/
+**/data/processed/*.rds
+**/GDCdata/
+
+# --- Analysis outputs (regenerable; keep repo lightweight) ---
+**/results/figures/
+**/results/geo_validation/
+**/results/*.rds
+
+# Keep small summary tables if needed (uncomment to ignore all results):
+# **/results/
+
+# --- R / Python artifacts ---
+.Rhistory
+.RData
+.Rproj.user/
+*.Rproj
+__pycache__/
+*.pyc
+.Python
+.venv/
+venv/
+.env
+
+# --- OS / editor ---
+.DS_Store
+*.swp
+*~
+.idea/
+.vscode/
+
+# --- Secrets (never commit) ---
+.env
+*.pem
+*_token*
+credentials*
